@@ -27,8 +27,11 @@ import org.springframework.context.annotation.PropertySource;
  * @author Jinkai.Ma
  */
 @Configuration
-@ComponentScan(basePackages = {"com.handu.open.dubbo.monitor"}, includeFilters = {@ComponentScan.Filter(value = Service.class)})
-@Import({WebConfig.class, DubboConfig.class, MyBatisConfig.class, Security.class})
-@PropertySource("classpath:/application.properties")
+@ComponentScan(basePackages = { "com.handu.open.dubbo.monitor" }, includeFilters = { @ComponentScan.Filter(value = Service.class) })
+@Import({ WebConfig.class, DubboConfig.class, MyBatisConfig.class,
+		Security.class })
+@PropertySource(value = { "classpath:/application.properties",
+		"file:${catalina.base}/conf/app.properties",
+		"file:${jboss.server.config.dir}/app.properties", "file:app.properties" }, ignoreResourceNotFound = true)
 public class MonitorConfig {
 }

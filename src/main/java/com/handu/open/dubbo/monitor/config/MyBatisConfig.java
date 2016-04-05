@@ -15,8 +15,13 @@
  */
 package com.handu.open.dubbo.monitor.config;
 
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
 import com.alibaba.druid.pool.DruidDataSource;
 import com.google.common.base.Preconditions;
+
+import org.apache.ibatis.datasource.jndi.JndiDataSourceFactory;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.springframework.beans.BeansException;
@@ -27,6 +32,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.jndi.JndiObjectFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
@@ -48,8 +54,8 @@ public class MyBatisConfig implements ApplicationContextAware {
     private static final String DB_PASSWORD = "db.password";
     private static final String DB_MAX_ACTIVE = "db.maxActive";
 
-    @Bean
-    public DruidDataSource dataSource() {
+    //@Bean
+    public DataSource defaultDataSource() {
         final String url = Preconditions.checkNotNull(env.getProperty(DB_URL));
         final String username = Preconditions.checkNotNull(env.getProperty(DB_USERNAME));
         final String password = env.getProperty(DB_PASSWORD);
@@ -62,6 +68,20 @@ public class MyBatisConfig implements ApplicationContextAware {
         dataSource.setMaxActive(maxActive);
 
         return dataSource;
+    }
+    
+    @Bean
+    public DataSource dataSource() {
+    	JndiObjectFactoryBean bean = new JndiObjectFactoryBean();
+    	bean.setJndiName("jdbc/dataSourceMonitor");
+    	bean.setResourceRef(true);
+    	bean.setDefaultObject(defaultDataSource());
+    	try {
+			bean.afterPropertiesSet();
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+    	return (DataSource) bean.getObject();
     }
 
     @Bean
