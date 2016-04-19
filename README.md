@@ -6,9 +6,13 @@
 
 Dubbo Monitor是针对Dubbo开发的监控系统，基于dubbo-monitor-simple改进而成，可以理解为其演化版本。该系统用关系型数据库（MySQL）记录日志的方式替代了dubbo-monitor-simple写文件的方式。注：亦可改为其他Relational Database（关系型数据库）。
 
-> PS: 项目目前依赖的是dubbox的2.8.4版本，但是dubbox并没有修改过监控相关的代码，因此理论上也可以支持dubbo的最新版本。
+> PS: handuyishe项目依赖的是dubbox的2.8.4版本，此分支使用2.5.3版本。
 
 ## 升级日志
+>### 2016-04-19
+>
+> 1. 将依赖的css文件保存在项目中，避免到google服务器上下载。
+
 >### 2015-08-25
 >
 > 1. 发布Dubbo Monitor for Mongo版本1.0.0，版本分支为mongo。
@@ -24,7 +28,7 @@ Dubbo Monitor是针对Dubbo开发的监控系统，基于dubbo-monitor-simple改
 `第一步`：创建数据库
 首先创建名称为monitor数据库，编码格式UTF-8。然后将项目sql文件夹下面的create.sql导入到数据库，生成dubbo_invoke表代表成功导入。
 
-`第二步`：编辑项目中application.properties，配置如下：
+`第二步`：编辑项目中application.properties（tomcat的conf目录下的application.properties可以覆盖此文件，建议在conf目录下配置），配置如下：
 
 ```
 ####Dubbo Settings
@@ -43,6 +47,7 @@ db.maxActive=500
 manager.username=admin
 manager.password=admin
 ```
+>PS:数据库的连接可以通过JNDI提供，JNDI的名称是jdbc/dataSourceMonitor
 
 `第三步`：打包运行项目
 执行maven命令：mvn clean package
