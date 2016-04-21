@@ -31,7 +31,7 @@ import org.springframework.context.annotation.PropertySource;
 @Import({ WebConfig.class, DubboConfig.class, MyBatisConfig.class,
 		Security.class })
 @PropertySource(value = { "classpath:/application.properties",
-		"file:${catalina.base}/conf/app.properties",
-		"file:${jboss.server.config.dir}/app.properties", "file:app.properties" }, ignoreResourceNotFound = true)
+		"file:${catalina.base}/conf/application.properties",
+		"file:${jboss.server.config.dir}/application.properties", "file:application.properties" }, ignoreResourceNotFound = true)
 public class MonitorConfig {
 }
